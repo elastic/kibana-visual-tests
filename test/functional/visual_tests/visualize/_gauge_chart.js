@@ -42,9 +42,11 @@ export default function ({ getService, getPageObjects }) {
 
     it('should have inspector enabled', async function () {
       await inspector.expectIsEnabled();
+      await visualTesting.snapshot();
     });
 
     it('should show Count', function () {
+
       const expectedCount = ['14,004', 'Count'];
 
       // initial metric of "Count" is selected by default
@@ -99,7 +101,7 @@ export default function ({ getService, getPageObjects }) {
       });
 
       await visualTesting.snapshot();
-      
+
     });
 
   });
