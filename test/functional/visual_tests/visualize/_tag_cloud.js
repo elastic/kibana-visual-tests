@@ -117,7 +117,6 @@ export default function ({ getService, getPageObjects }) {
         .then(function (results) {
           log.debug('results here ' + results);
           expect(results).to.eql(['72px', '63px', '25px', '32px',  '18px' ]);
-          await visualTesting.snapshot();
         });
     });
 
