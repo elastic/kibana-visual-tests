@@ -102,7 +102,6 @@ export default function ({ getService, getPageObjects }) {
         });
 
         expect(roundedValues).to.eql(expected);
-        await visualTesting.snapshot();
       }
 
       describe('tile map chart', function indexPatternCreation() {
