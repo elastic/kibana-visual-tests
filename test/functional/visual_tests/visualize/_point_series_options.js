@@ -132,7 +132,6 @@ export default function ({ getService, getPageObjects }) {
         await visualTesting.snapshot();
         gridLines.forEach(gridLine => {
           expect(gridLine.y).to.be(0);
-          await visualTesting.snapshot();
         });
       });
 
@@ -145,7 +144,6 @@ export default function ({ getService, getPageObjects }) {
         await visualTesting.snapshot();
         gridLines.forEach(gridLine => {
           expect(gridLine.x).to.be(0);
-          await visualTesting.snapshot();
         });
       });
     });
