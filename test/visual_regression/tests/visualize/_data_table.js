@@ -41,8 +41,8 @@ export default function ({ getService, getPageObjects }) {
       log.debug('clickNewSearch');
       await PageObjects.visualize.clickNewSearch();
       await PageObjects.timePicker.setAbsoluteRange(fromTime, toTime);
-      log.debug('Bucket = Split Rows');
-      await PageObjects.visualize.clickBucket('Split Rows');
+      log.debug('Bucket = Split rows');
+      await PageObjects.visualize.clickBucket('Split rows');
       log.debug('Aggregation = Histogram');
       await PageObjects.visualize.selectAggregation('Histogram');
       log.debug('Field = bytes');
@@ -107,8 +107,7 @@ export default function ({ getService, getPageObjects }) {
       await PageObjects.visualize.clickDataTable();
       await PageObjects.visualize.clickNewSearch();
       await PageObjects.timePicker.setAbsoluteRange(fromTime, toTime);
-      await PageObjects.visualize.clickAddMetric();
-      await PageObjects.visualize.clickBucket('Metric', 'metric');
+      await PageObjects.visualize.clickBucket('Metric', 'metrics');
       await PageObjects.visualize.selectAggregation('Average Bucket', 'metrics');
       await PageObjects.visualize.selectAggregation('Terms', 'metrics', 'buckets');
       await PageObjects.visualize.selectField('geo.src', 'metrics', 'buckets');
@@ -124,7 +123,7 @@ export default function ({ getService, getPageObjects }) {
       await PageObjects.visualize.clickDataTable();
       await PageObjects.visualize.clickNewSearch();
       await PageObjects.timePicker.setAbsoluteRange(fromTime, toTime);
-      await PageObjects.visualize.clickBucket('Split Rows');
+      await PageObjects.visualize.clickBucket('Split rows');
       await PageObjects.visualize.selectAggregation('Date Histogram');
       await PageObjects.visualize.selectField('@timestamp');
       await PageObjects.visualize.setInterval('Daily');
@@ -144,7 +143,7 @@ export default function ({ getService, getPageObjects }) {
       await PageObjects.visualize.clickDataTable();
       await PageObjects.visualize.clickNewSearch();
       await PageObjects.timePicker.setAbsoluteRange(fromTime, toTime);
-      await PageObjects.visualize.clickBucket('Split Rows');
+      await PageObjects.visualize.clickBucket('Split rows');
       await PageObjects.visualize.selectAggregation('Date Histogram');
       await PageObjects.visualize.selectField('@timestamp');
       await PageObjects.visualize.setInterval('Daily');
@@ -198,7 +197,7 @@ export default function ({ getService, getPageObjects }) {
       await PageObjects.visualize.clickDataTable();
       await PageObjects.visualize.clickNewSearch();
       await PageObjects.timePicker.setAbsoluteRange(fromTime, toTime);
-      await PageObjects.visualize.clickBucket('Split Rows');
+      await PageObjects.visualize.clickBucket('Split rows');
       await PageObjects.visualize.selectAggregation('Range');
       await PageObjects.visualize.selectField('bytes');
       await PageObjects.visualize.clickGo();
@@ -217,7 +216,7 @@ export default function ({ getService, getPageObjects }) {
         await PageObjects.visualize.clickDataTable();
         await PageObjects.visualize.clickNewSearch();
         await PageObjects.timePicker.setAbsoluteRange(fromTime, toTime);
-        await PageObjects.visualize.clickBucket('Split Rows');
+        await PageObjects.visualize.clickBucket('Split rows');
         await PageObjects.visualize.selectAggregation('Terms');
         await PageObjects.visualize.selectField('extension.raw');
         await PageObjects.visualize.setSize(2);
@@ -257,13 +256,12 @@ export default function ({ getService, getPageObjects }) {
         await PageObjects.visualize.clickDataTable();
         await PageObjects.visualize.clickNewSearch();
         await PageObjects.timePicker.setAbsoluteRange(fromTime, toTime);
-        await PageObjects.visualize.clickBucket('Split Rows');
+        await PageObjects.visualize.clickBucket('Split rows');
         await PageObjects.visualize.selectAggregation('Terms');
         await PageObjects.visualize.selectField('extension.raw');
         await PageObjects.visualize.setSize(2);
         await PageObjects.visualize.toggleOpenEditor(2, 'false');
-        await PageObjects.visualize.clickAddBucket();
-        await PageObjects.visualize.clickBucket('Split Rows');
+        await PageObjects.visualize.clickBucket('Split rows');
         await PageObjects.visualize.selectAggregation('Terms');
         await PageObjects.visualize.selectField('geo.dest');
         await PageObjects.visualize.toggleOpenEditor(3, 'false');
@@ -329,8 +327,7 @@ export default function ({ getService, getPageObjects }) {
 
       it('should show metrics other than count on each level', async () => {
         await PageObjects.visualize.clickData();
-        await PageObjects.visualize.clickAddMetric();
-        await PageObjects.visualize.clickBucket('Metric', 'metric');
+        await PageObjects.visualize.clickBucket('Metric', 'metrics');
         await PageObjects.visualize.selectAggregation('Average', 'metrics');
         await PageObjects.visualize.selectField('bytes', 'metrics');
         await PageObjects.visualize.clickGo();
@@ -358,19 +355,17 @@ export default function ({ getService, getPageObjects }) {
         await PageObjects.visualize.clickDataTable();
         await PageObjects.visualize.clickNewSearch();
         await PageObjects.timePicker.setAbsoluteRange(fromTime, toTime);
-        await PageObjects.visualize.clickBucket('Split Table');
+        await PageObjects.visualize.clickBucket('Split table');
         await PageObjects.visualize.selectAggregation('Terms');
         await PageObjects.visualize.selectField('extension.raw');
         await PageObjects.visualize.setSize(2);
         await PageObjects.visualize.toggleOpenEditor(2, 'false');
-        await PageObjects.visualize.clickAddBucket();
-        await PageObjects.visualize.clickBucket('Split Rows');
+        await PageObjects.visualize.clickBucket('Split rows');
         await PageObjects.visualize.selectAggregation('Terms');
         await PageObjects.visualize.selectField('geo.dest');
         await PageObjects.visualize.setSize(3, 3);
         await PageObjects.visualize.toggleOpenEditor(3, 'false');
-        await PageObjects.visualize.clickAddBucket();
-        await PageObjects.visualize.clickBucket('Split Rows');
+        await PageObjects.visualize.clickBucket('Split rows');
         await PageObjects.visualize.selectAggregation('Terms');
         await PageObjects.visualize.selectField('geo.src');
         await PageObjects.visualize.setSize(3, 4);
