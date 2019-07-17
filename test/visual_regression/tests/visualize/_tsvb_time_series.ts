@@ -115,7 +115,8 @@ export default function({ getPageObjects, getService }: FtrProviderContext) {
         await visualTesting.snapshot();
       });
 
-      it('should show the correct count in the legend with "Human readable" duration formatter', async () => {
+      // FLAKY: https://github.com/elastic/kibana/issues/40458
+      it.skip('should show the correct count in the legend with "Human readable" duration formatter', async () => {
         await visualBuilder.clickSeriesOption();
         await visualBuilder.changeDataFormatter('Duration');
         await visualBuilder.setDurationFormatterSettings({ to: 'Human readable' });
@@ -128,7 +129,7 @@ export default function({ getPageObjects, getService }: FtrProviderContext) {
         const actualCountSec = await visualBuilder.getRhythmChartLegendValue();
         expect(actualCountSec).to.be('3 minutes');
         await visualTesting.snapshot();
-        
+
         log.debug(`to: 'Human readable', from: 'Minutes'`);
         await visualBuilder.setDurationFormatterSettings({ to: 'Human readable', from: 'Minutes' });
         const actualCountMin = await visualBuilder.getRhythmChartLegendValue();
