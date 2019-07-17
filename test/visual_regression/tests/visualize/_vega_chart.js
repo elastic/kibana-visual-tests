@@ -34,31 +34,30 @@ export default function ({ getService, getPageObjects }) {
     });
 
     describe('vega chart', () => {
-        it('should not have inspector enabled', async function () {
-          await inspector.expectIsNotEnabled();
-          await visualTesting.snapshot();
-        });
+      it('should not have inspector enabled', async function () {
+        await inspector.expectIsNotEnabled();
+        await visualTesting.snapshot();
+      });
 
-        it.skip('should have some initial vega spec text', async function () {
-          const vegaSpec = await PageObjects.visualize.getVegaSpec();
-          expect(vegaSpec).to.contain('{').and.to.contain('data');
-          expect(vegaSpec.length).to.be.above(500);
-          await visualTesting.snapshot();
-        });
+      it.skip('should have some initial vega spec text', async function () {
+        const vegaSpec = await PageObjects.visualize.getVegaSpec();
+        expect(vegaSpec).to.contain('{').and.to.contain('data');
+        expect(vegaSpec.length).to.be.above(500);
+        await visualTesting.snapshot();
+      });
 
-        it('should have view and control containers', async function () {
-          const view = await PageObjects.visualize.getVegaViewContainer();
-          expect(view).to.be.ok();
-          const size = await view.getSize();
-          expect(size).to.have.property('width').and.to.have.property('height');
-          expect(size.width).to.be.above(0);
-          expect(size.height).to.be.above(0);
+      it('should have view and control containers', async function () {
+        const view = await PageObjects.visualize.getVegaViewContainer();
+        expect(view).to.be.ok();
+        const size = await view.getSize();
+        expect(size).to.have.property('width').and.to.have.property('height');
+        expect(size.width).to.be.above(0);
+        expect(size.height).to.be.above(0);
 
-          const controls = await PageObjects.visualize.getVegaControlContainer();
-          expect(controls).to.be.ok();
-          await visualTesting.snapshot();
-        });
-
+        const controls = await PageObjects.visualize.getVegaControlContainer();
+        expect(controls).to.be.ok();
+        await visualTesting.snapshot();
+      });
     });
   });
 }
