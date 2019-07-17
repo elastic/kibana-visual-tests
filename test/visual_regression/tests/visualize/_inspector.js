@@ -22,9 +22,9 @@ export default function ({ getService, getPageObjects }) {
   const log = getService('log');
   const inspector = getService('inspector');
   const filterBar = getService('filterBar');
+  const PageObjects = getPageObjects(['common', 'visualize', 'header']);
   const visualTesting = getService('visualTesting');
-  const PageObjects = getPageObjects(['common', 'visualize', 'timePicker']);
-
+  
   describe('inspector', function describeIndexTests() {
     before(async function () {
       const fromTime = '2015-09-19 06:31:44.000';
@@ -34,7 +34,8 @@ export default function ({ getService, getPageObjects }) {
       await PageObjects.visualize.clickVerticalBarChart();
       await PageObjects.visualize.clickNewSearch();
 
-      await PageObjects.timePicker.setAbsoluteRange(fromTime, toTime);
+      log.debug('Set absolute time range from \"' + fromTime + '\" to \"' + toTime + '\"');
+      await PageObjects.header.setAbsoluteRange(fromTime, toTime);
     });
 
     describe('inspector table', function indexPatternCreation() {
@@ -60,19 +61,17 @@ export default function ({ getService, getPageObjects }) {
           await PageObjects.visualize.selectAggregation('Terms');
           await PageObjects.visualize.selectField('machine.os.raw');
           await PageObjects.visualize.setSize(2);
-          await PageObjects.visualize.toggleOtherBucket(3);
+          await PageObjects.visualize.toggleOtherBucket();
           await PageObjects.visualize.clickGo();
         });
 
         beforeEach(async function () {
           await inspector.open();
-          await PageObjects.visualize.waitForVisualizationRenderingStabilized();
         });
 
         afterEach(async function () {
           await inspector.close();
           await filterBar.removeFilter('machine.os.raw');
-          await PageObjects.visualize.waitForVisualizationRenderingStabilized();
         });
 
         it('should allow filtering for values', async function () {

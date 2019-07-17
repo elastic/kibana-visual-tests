@@ -17,7 +17,7 @@
  * under the License.
  */
 
-import expect from '@kbn/expect';
+import expect from 'expect.js';
 
 export default function ({ getService, getPageObjects }) {
   const log = getService('log');
@@ -25,7 +25,7 @@ export default function ({ getService, getPageObjects }) {
   const inspector = getService('inspector');
   const filterBar = getService('filterBar');
   const visualTesting = getService('visualTesting');
-  const PageObjects = getPageObjects(['common', 'visualize', 'header', 'timePicker']);
+  const PageObjects = getPageObjects(['common', 'visualize', 'header']);
 
   describe('vertical bar chart', function () {
     const fromTime = '2015-09-19 06:31:44.000';
@@ -38,7 +38,8 @@ export default function ({ getService, getPageObjects }) {
       log.debug('clickVerticalBarChart');
       await PageObjects.visualize.clickVerticalBarChart();
       await PageObjects.visualize.clickNewSearch();
-      await PageObjects.timePicker.setAbsoluteRange(fromTime, toTime);
+      log.debug('Set absolute time range from \"' + fromTime + '\" to \"' + toTime + '\"');
+      await PageObjects.header.setAbsoluteRange(fromTime, toTime);
       log.debug('Bucket = X-Axis');
       await PageObjects.visualize.clickBucket('X-Axis');
       log.debug('Aggregation = Date Histogram');
@@ -117,7 +118,7 @@ export default function ({ getService, getPageObjects }) {
       const fromTime = '2015-09-20 06:31:44.000';
       const toTime = '2015-09-22 18:31:44.000';
 
-      await PageObjects.timePicker.setAbsoluteRange(fromTime, toTime);
+      await PageObjects.header.setAbsoluteRange(fromTime, toTime);
 
       let expectedChartValues = [
         82, 218, 341, 440, 480, 517, 522, 446, 403, 321, 258, 172, 95, 55, 38, 24, 3, 4,
@@ -249,7 +250,9 @@ export default function ({ getService, getPageObjects }) {
         await PageObjects.visualize.clickBucket('Split Series');
         await PageObjects.visualize.selectAggregation('Terms');
         await PageObjects.visualize.selectField('response.raw');
-        await PageObjects.visualize.waitForVisualizationRenderingStabilized();
+        await PageObjects.header.waitUntilLoadingHasFinished();
+
+        await PageObjects.common.sleep(1003);
         await PageObjects.visualize.clickGo();
         await PageObjects.header.waitUntilLoadingHasFinished();
 
@@ -263,6 +266,7 @@ export default function ({ getService, getPageObjects }) {
         await PageObjects.visualize.toggleOpenEditor(1, 'false');
         await PageObjects.visualize.selectCustomSortMetric(3, 'Min', 'bytes');
         await PageObjects.visualize.clickGo();
+        await PageObjects.header.waitUntilLoadingHasFinished();
 
         const expectedEntries = ['404', '200', '503'];
         const legendEntries = await PageObjects.visualize.getLegendEntries();
@@ -291,15 +295,18 @@ export default function ({ getService, getPageObjects }) {
         await PageObjects.visualize.clickBucket('Split Series');
         await PageObjects.visualize.selectAggregation('Terms');
         await PageObjects.visualize.selectField('response.raw');
-        await PageObjects.visualize.waitForVisualizationRenderingStabilized();
+        await PageObjects.header.waitUntilLoadingHasFinished();
 
         await PageObjects.visualize.toggleOpenEditor(3, 'false');
         await PageObjects.visualize.clickAddBucket();
         await PageObjects.visualize.clickBucket('Split Series');
         await PageObjects.visualize.selectAggregation('Terms');
         await PageObjects.visualize.selectField('machine.os');
-        await PageObjects.visualize.waitForVisualizationRenderingStabilized();
+        await PageObjects.header.waitUntilLoadingHasFinished();
+
+        await PageObjects.common.sleep(1003);
         await PageObjects.visualize.clickGo();
+        await PageObjects.header.waitUntilLoadingHasFinished();
 
         const expectedEntries = [
           '200 - win 8', '200 - win xp', '200 - ios', '200 - osx', '200 - win 7',
@@ -314,6 +321,7 @@ export default function ({ getService, getPageObjects }) {
       it('should show correct series when disabling first agg', async function () {
         await PageObjects.visualize.toggleDisabledAgg(3);
         await PageObjects.visualize.clickGo();
+        await PageObjects.header.waitUntilLoadingHasFinished();
 
         const expectedEntries = [ 'win 8', 'win xp', 'ios', 'osx', 'win 7' ];
         const legendEntries = await PageObjects.visualize.getLegendEntries();
@@ -329,8 +337,12 @@ export default function ({ getService, getPageObjects }) {
         await PageObjects.visualize.toggleOpenEditor(2, 'false');
         await PageObjects.visualize.toggleOpenEditor(1);
         await PageObjects.visualize.selectAggregation('Derivative', 'metrics');
-        await PageObjects.visualize.waitForVisualizationRenderingStabilized();
+        await PageObjects.header.waitUntilLoadingHasFinished();
+
+
+        await PageObjects.common.sleep(1003);
         await PageObjects.visualize.clickGo();
+        await PageObjects.header.waitUntilLoadingHasFinished();
 
         const expectedEntries = [
           'Derivative of Count'

@@ -17,11 +17,11 @@
  * under the License.
  */
 
-import expect from '@kbn/expect';
+import expect from 'expect.js';
 
 export default function ({ getService, getPageObjects }) {
   const filterBar = getService('filterBar');
-  const PageObjects = getPageObjects(['common', 'visualize', 'header', 'timePicker']);
+  const PageObjects = getPageObjects(['common', 'visualize', 'header']);
   const testSubjects = getService('testSubjects');
   const inspector = getService('inspector');
   const visualTesting = getService('visualTesting');
@@ -30,13 +30,13 @@ export default function ({ getService, getPageObjects }) {
 
   const FIELD_NAME = 'machine.os.raw';
 
-  describe.only('input control visualization', () => {
+  describe('input control visualization', () => {
 
     before(async () => {
       await PageObjects.visualize.navigateToNewVisualization();
       await PageObjects.visualize.clickInputControlVis();
       // set time range to time with no documents - input controls do not use time filter be default
-      await PageObjects.timePicker.setAbsoluteRange('2017-01-01 00:00:00.000', '2017-01-02 00:00:00.000');
+      await PageObjects.header.setAbsoluteRange('2017-01-01', '2017-01-02');
       await PageObjects.visualize.clickVisEditorTab('controls');
       await PageObjects.visualize.addInputControl();
       await comboBox.set('indexPatternSelect-0', 'logstash- ');
@@ -49,22 +49,11 @@ export default function ({ getService, getPageObjects }) {
       await visualTesting.snapshot();
     });
 
-    describe('filter bar', () => {
-      it('should show the default index pattern when clicking "Add filter"', async () => {
-        await testSubjects.click('addFilter');
-        const fields = await filterBar.getFilterEditorFields();
-        await filterBar.ensureFieldEditorModalIsClosed();
-        expect(fields.length).to.be.greaterThan(0);
-        await visualTesting.snapshot();
-      });
-    });
-
     describe('updateFiltersOnChange is false', () => {
 
       it('should contain dropdown with terms aggregation results as options', async () => {
         const menu = await comboBox.getOptionsList('listControlSelect0');
         expect(menu.trim().split('\n').join()).to.equal('ios,osx,win 7,win 8,win xp');
-        await visualTesting.snapshot();
       });
 
       it('should display staging control buttons', async () => {
@@ -74,7 +63,6 @@ export default function ({ getService, getPageObjects }) {
         expect(submitButtonExists).to.equal(true);
         expect(cancelButtonExists).to.equal(true);
         expect(clearButtonExists).to.equal(true);
-        await visualTesting.snapshot();
       });
 
       it('should stage filter when item selected but not create filter pill', async () => {
@@ -85,7 +73,6 @@ export default function ({ getService, getPageObjects }) {
 
         const hasFilter = await filterBar.hasFilter(FIELD_NAME, 'ios');
         expect(hasFilter).to.equal(false);
-        await visualTesting.snapshot();
       });
 
       it('should add filter pill when submit button is clicked', async () => {
@@ -191,7 +178,8 @@ export default function ({ getService, getPageObjects }) {
       });
 
       it('should re-create control when global time filter is updated', async () => {
-        await PageObjects.timePicker.setAbsoluteRange('2015-01-01 00:00:00.000', '2016-01-01 00:00:00.000');
+        await PageObjects.header.setAbsoluteRange('2015-01-01', '2016-01-01');
+        await PageObjects.header.waitUntilLoadingHasFinished();
 
         // Expect control to have values for selected time filter
         const menu = await comboBox.getOptionsList('listControlSelect0');
@@ -240,7 +228,7 @@ export default function ({ getService, getPageObjects }) {
         const updatedOptions = await comboBox.getOptionsList('listControlSelect0');
         expect(updatedOptions.trim().split('\n').join()).to.equal('135.206.117.161,177.194.175.66,243.158.217.196');
         await visualTesting.snapshot();
-        
+
       });
     });
 

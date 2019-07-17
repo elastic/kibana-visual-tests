@@ -17,15 +17,16 @@
  * under the License.
  */
 
-import expect from '@kbn/expect';
+import expect from 'expect.js';
 
 export default function ({ getService, getPageObjects }) {
   const filterBar = getService('filterBar');
   const log = getService('log');
   const renderable = getService('renderable');
   const embedding = getService('embedding');
-  const PageObjects = getPageObjects(['common', 'visualize', 'header', 'timePicker']);
+  const PageObjects = getPageObjects(['common', 'visualize', 'header']);
   const visualTesting = getService('visualTesting');
+  
   const fromTime = '2015-09-19 06:31:44.000';
   const toTime = '2015-09-23 18:31:44.000';
 
@@ -36,7 +37,7 @@ export default function ({ getService, getPageObjects }) {
         await PageObjects.visualize.navigateToNewVisualization();
         await PageObjects.visualize.clickDataTable();
         await PageObjects.visualize.clickNewSearch();
-        await PageObjects.timePicker.setAbsoluteRange(fromTime, toTime);
+        await PageObjects.header.setAbsoluteRange(fromTime, toTime);
         await PageObjects.visualize.clickBucket('Split Rows');
         await PageObjects.visualize.selectAggregation('Date Histogram');
         await PageObjects.visualize.selectField('@timestamp');
@@ -45,7 +46,7 @@ export default function ({ getService, getPageObjects }) {
         await PageObjects.visualize.clickBucket('Split Rows');
         await PageObjects.visualize.selectAggregation('Histogram');
         await PageObjects.visualize.selectField('bytes');
-        await PageObjects.visualize.setNumericInterval('2000',  undefined, 3);
+        await PageObjects.visualize.setNumericInterval('2000');
         await PageObjects.visualize.clickGo();
       });
 

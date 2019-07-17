@@ -17,7 +17,7 @@
  * under the License.
  */
 
-import expect from '@kbn/expect';
+import expect from 'expect.js';
 
 export default function ({ getService, getPageObjects }) {
   const log = getService('log');
@@ -28,7 +28,7 @@ export default function ({ getService, getPageObjects }) {
   const testSubjects = getService('testSubjects');
   const browser = getService('browser');
   const visualTesting = getService('visualTesting');
-  const PageObjects = getPageObjects(['common', 'visualize', 'timePicker', 'settings']);
+  const PageObjects = getPageObjects(['common', 'discover', 'visualize', 'header', 'settings']);
 
 
   describe('tile map visualize app', function () {
@@ -46,7 +46,8 @@ export default function ({ getService, getPageObjects }) {
         log.debug('clickTileMap');
         await PageObjects.visualize.clickTileMap();
         await PageObjects.visualize.clickNewSearch();
-        await PageObjects.timePicker.setAbsoluteRange(fromTime, toTime);
+        log.debug('Set absolute time range from \"' + fromTime + '\" to \"' + toTime + '\"');
+        await PageObjects.header.setAbsoluteRange(fromTime, toTime);
         //do not configure aggs
       });
 
@@ -72,7 +73,8 @@ export default function ({ getService, getPageObjects }) {
         log.debug('clickTileMap');
         await PageObjects.visualize.clickTileMap();
         await PageObjects.visualize.clickNewSearch();
-        await PageObjects.timePicker.setAbsoluteRange(fromTime, toTime);
+        log.debug('Set absolute time range from \"' + fromTime + '\" to \"' + toTime + '\"');
+        await PageObjects.header.setAbsoluteRange(fromTime, toTime);
         log.debug('select bucket Geo Coordinates');
         await PageObjects.visualize.clickBucket('Geo Coordinates');
         log.debug('Click aggregation Geohash');
@@ -188,7 +190,7 @@ export default function ({ getService, getPageObjects }) {
           const data = await inspector.getTableData();
           await inspector.close();
 
-          await filterBar.removeAllFilters();
+          await PageObjects.discover.removeAllFilters();
           compareTableData(data, expectedPrecision2DataTable);
           await visualTesting.snapshot();
         });

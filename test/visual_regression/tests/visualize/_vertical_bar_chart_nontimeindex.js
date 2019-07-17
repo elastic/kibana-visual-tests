@@ -17,7 +17,7 @@
  * under the License.
  */
 
-import expect from '@kbn/expect';
+import expect from 'expect.js';
 
 export default function ({ getService, getPageObjects }) {
   const log = getService('log');
@@ -43,7 +43,7 @@ export default function ({ getService, getPageObjects }) {
       log.debug('Field = @timestamp');
       await PageObjects.visualize.selectField('@timestamp');
       await PageObjects.visualize.setCustomInterval('3h');
-      await PageObjects.visualize.waitForVisualizationRenderingStabilized();
+      await PageObjects.visualize.clickGo();
     };
 
 

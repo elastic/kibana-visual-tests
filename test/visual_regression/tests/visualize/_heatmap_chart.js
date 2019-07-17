@@ -17,14 +17,14 @@
  * under the License.
  */
 
-import expect from '@kbn/expect';
+import expect from 'expect.js';
 
 export default function ({ getService, getPageObjects }) {
   const log = getService('log');
   const inspector = getService('inspector');
+  const PageObjects = getPageObjects(['common', 'visualize', 'header']);
   const visualTesting = getService('visualTesting');
-  const PageObjects = getPageObjects(['common', 'visualize', 'timePicker']);
-
+  
   describe('heatmap chart', function indexPatternCreation() {
     const vizName1 = 'Visualization HeatmapChart';
     const fromTime = '2015-09-19 06:31:44.000';
@@ -36,7 +36,8 @@ export default function ({ getService, getPageObjects }) {
       log.debug('clickHeatmapChart');
       await PageObjects.visualize.clickHeatmapChart();
       await PageObjects.visualize.clickNewSearch();
-      await PageObjects.timePicker.setAbsoluteRange(fromTime, toTime);
+      log.debug('Set absolute time range from \"' + fromTime + '\" to \"' + toTime + '\"');
+      await PageObjects.header.setAbsoluteRange(fromTime, toTime);
       log.debug('Bucket = X-Axis');
       await PageObjects.visualize.clickBucket('X-Axis');
       log.debug('Aggregation = Date Histogram');
@@ -136,7 +137,6 @@ export default function ({ getService, getPageObjects }) {
       await PageObjects.visualize.addCustomRange(600, 700);
       await PageObjects.visualize.clickAddRange();
       await PageObjects.visualize.addCustomRange(700, 800);
-      await PageObjects.visualize.waitForVisualizationRenderingStabilized();
       await PageObjects.visualize.clickGo();
       const legends = await PageObjects.visualize.getLegendEntries();
       const expectedLegends = [
