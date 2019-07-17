@@ -47,7 +47,6 @@ export default function({ getService, loadTestFile }: FtrProviderContext) {
       loadTestFile(require.resolve('./_gauge_chart'));
       loadTestFile(require.resolve('./_heatmap_chart'));
       loadTestFile(require.resolve('./_histogram_request_start'));
-      loadTestFile(require.resolve('./_input_control_vis'));
       loadTestFile(require.resolve('./_inspector'));
       loadTestFile(require.resolve('./_lab_mode'));
       loadTestFile(require.resolve('./_line_chart'));
@@ -60,8 +59,6 @@ export default function({ getService, loadTestFile }: FtrProviderContext) {
       loadTestFile(require.resolve('./_tile_map'));
       loadTestFile(require.resolve('./_tsvb_chart'));
       loadTestFile(require.resolve('./_tsvb_markdown'));
-      loadTestFile(require.resolve('./_tsvb_table'));
-      loadTestFile(require.resolve('./_tsvb_time_series'));
       loadTestFile(require.resolve('./_vega_chart'));
       loadTestFile(require.resolve('./_vertical_bar_chart_nontimeindex'));
       loadTestFile(require.resolve('./_vertical_bar_chart'));

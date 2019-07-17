@@ -24,6 +24,7 @@ import { FtrProviderContext } from '../../ftr_provider_context';
 export default function({ getService, getPageObjects }: FtrProviderContext) {
   const esArchiver = getService('esArchiver');
   const log = getService('log');
+  const retry = getService('retry');
   const inspector = getService('inspector');
   const kibanaServer = getService('kibanaServer');
   const testSubjects = getService('testSubjects');
@@ -36,6 +37,49 @@ export default function({ getService, getPageObjects }: FtrProviderContext) {
       await PageObjects.visualize.navigateToNewVisualization();
       await PageObjects.visualize.clickVisualBuilder();
       await PageObjects.visualBuilder.checkVisualBuilderIsPresent();
+    });
+
+    describe('Time Series', () => {
+      beforeEach(async () => {
+        await PageObjects.visualBuilder.resetPage();
+      });
+
+      it('should show the correct count in the legend', async () => {
+        await retry.try(async () => {
+          const actualCount = await PageObjects.visualBuilder.getRhythmChartLegendValue();
+          expect(actualCount).to.be('156');
+        });
+      });
+
+      it('should show the correct count in the legend with 2h offset', async () => {
+        await PageObjects.visualBuilder.clickSeriesOption();
+        await PageObjects.visualBuilder.enterOffsetSeries('2h');
+        const actualCount = await PageObjects.visualBuilder.getRhythmChartLegendValue();
+        expect(actualCount).to.be('293');
+      });
+
+      it('should show the correct count in the legend with -2h offset', async () => {
+        await PageObjects.visualBuilder.clickSeriesOption();
+        await PageObjects.visualBuilder.enterOffsetSeries('-2h');
+        const actualCount = await PageObjects.visualBuilder.getRhythmChartLegendValue();
+        expect(actualCount).to.be('53');
+      });
+
+      it('should open color picker, deactivate panel and clone series', async () => {
+        await PageObjects.visualBuilder.clickColorPicker();
+        await PageObjects.visualBuilder.checkColorPickerPopUpIsPresent();
+        await PageObjects.visualBuilder.clickColorPicker();
+
+        await PageObjects.visualBuilder.changePanelPreview();
+        await PageObjects.visualBuilder.checkPreviewIsDisabled();
+        await PageObjects.visualBuilder.changePanelPreview();
+
+        await PageObjects.visualBuilder.cloneSeries();
+        const legend = await PageObjects.visualBuilder.getLegentItems();
+        const series = await PageObjects.visualBuilder.getSeries();
+        expect(legend.length).to.be(2);
+        expect(series.length).to.be(2);
+      });
     });
 
     describe('metric', () => {
@@ -97,7 +141,25 @@ export default function({ getService, getPageObjects }: FtrProviderContext) {
         expect(labelString).to.be('Count');
         const gaugeCount = await PageObjects.visualBuilder.getTopNCount();
         expect(gaugeCount).to.be('156');
-        await visualTesting.snapshot();
+      });
+    });
+
+    describe('table', () => {
+      beforeEach(async () => {
+        await PageObjects.visualBuilder.resetPage(
+          '2015-09-22 06:00:00.000',
+          '2015-09-22 11:00:00.000'
+        );
+        await PageObjects.visualBuilder.clickTable();
+      });
+
+      it('should display correct values on changing group by field and column name', async () => {
+        await PageObjects.visualBuilder.selectGroupByField('machine.os.raw');
+        await PageObjects.visualBuilder.setLabelValue('OS');
+        await PageObjects.visualize.waitForVisualizationRenderingStabilized();
+        const tableData = await PageObjects.visualBuilder.getViewTable();
+        const expectedData = 'OS Count\nwin 8 13\nwin xp 10\nwin 7 12\nios 5\nosx 3';
+        expect(tableData).to.be(expectedData);
       });
     });
 

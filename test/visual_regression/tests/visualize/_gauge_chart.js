@@ -27,7 +27,6 @@ export default function ({ getService, getPageObjects }) {
   const PageObjects = getPageObjects(['common', 'visualize', 'timePicker']);
 
   describe('gauge chart', function indexPatternCreation() {
-    this.tags('smoke');
     const fromTime = '2015-09-19 06:31:44.000';
     const toTime = '2015-09-23 18:31:44.000';
 
@@ -60,7 +59,7 @@ export default function ({ getService, getPageObjects }) {
     it('should show Split Gauges', async function () {
       await PageObjects.visualize.clickMetricEditor();
       log.debug('Bucket = Split Group');
-      await PageObjects.visualize.clickBucket('Split group');
+      await PageObjects.visualize.clickBucket('Split Group');
       log.debug('Aggregation = Terms');
       await PageObjects.visualize.selectAggregation('Terms');
       log.debug('Field = machine.os.raw');
@@ -89,7 +88,8 @@ export default function ({ getService, getPageObjects }) {
       await PageObjects.visualize.selectAggregation('Terms');
       await PageObjects.visualize.selectField('machine.os.raw');
       await PageObjects.visualize.setSize('1');
-      await PageObjects.visualize.clickBucket('Metric', 'metrics');
+      await PageObjects.visualize.clickAddMetric();
+      await PageObjects.visualize.clickBucket('Metric', 'metric');
       await PageObjects.visualize.selectAggregation('Min', 'metrics');
       await PageObjects.visualize.selectField('bytes', 'metrics');
       await PageObjects.visualize.clickGo();
