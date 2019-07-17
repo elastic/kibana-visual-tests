@@ -78,6 +78,7 @@ export default function ({ getService, getPageObjects }) {
 
     it('should have inspector enabled', async function () {
       await inspector.expectIsEnabled();
+      await visualTesting.snapshot();
     });
 
     it('should show correct data', function () {
@@ -100,6 +101,64 @@ export default function ({ getService, getPageObjects }) {
         await visualTesting.snapshot();
         await inspector.close();
       });
+    });
+
+    it('should show percentage columns', async () => {
+      async function expectValidTableData() {
+        const data = await PageObjects.visualize.getTableVisData();
+        expect(data.trim().split('\n')).to.be.eql([
+          '0 to 1000',
+          '1,351 64.7%',
+          '1000 to 2000',
+          '737 35.3%',
+        ]);
+      }
+
+      // load a plain table
+      await PageObjects.visualize.navigateToNewVisualization();
+      await PageObjects.visualize.clickDataTable();
+      await PageObjects.visualize.clickNewSearch();
+      await PageObjects.timePicker.setAbsoluteRange(fromTime, toTime);
+      await PageObjects.visualize.clickBucket('Split rows');
+      await PageObjects.visualize.selectAggregation('Range');
+      await PageObjects.visualize.selectField('bytes');
+      await PageObjects.visualize.clickGo();
+      await PageObjects.visualize.clickOptionsTab();
+      await PageObjects.visualize.setSelectByOptionText(
+        'datatableVisualizationPercentageCol',
+        'Count'
+      );
+      await PageObjects.visualize.clickGo();
+
+      await expectValidTableData();
+      await visualTesting.snapshot();
+
+      // check that it works after a save and reload
+      const SAVE_NAME = 'viz w/ percents';
+      await PageObjects.visualize.saveVisualizationExpectSuccessAndBreadcrumb(SAVE_NAME);
+      await PageObjects.visualize.waitForVisualizationSavedToastGone();
+      await PageObjects.visualize.loadSavedVisualization(SAVE_NAME);
+      await PageObjects.visualize.waitForVisualization();
+
+      await expectValidTableData();
+      await visualTesting.snapshot();
+
+      // check that it works after selecting a column that's deleted
+      await PageObjects.visualize.clickData();
+      await PageObjects.visualize.clickBucket('Metric', 'metrics');
+      await PageObjects.visualize.selectAggregation('Average', 'metrics');
+      await PageObjects.visualize.selectField('bytes', 'metrics');
+      await PageObjects.visualize.removeDimension(1);
+      await PageObjects.visualize.clickGo();
+      await PageObjects.visualize.clickOptionsTab();
+
+      const data = await PageObjects.visualize.getTableVisData();
+      expect(data.trim().split('\n')).to.be.eql([
+        '0 to 1000',
+        '344.094B',
+        '1000 to 2000',
+        '1.697KB',
+      ]);
     });
 
     it('should show correct data when using average pipeline aggregation', async () => {
