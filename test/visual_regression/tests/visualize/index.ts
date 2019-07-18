@@ -47,7 +47,7 @@ export default function({ getService, loadTestFile }: FtrProviderContext) {
       loadTestFile(require.resolve('./_gauge_chart'));
       loadTestFile(require.resolve('./_heatmap_chart'));
       loadTestFile(require.resolve('./_histogram_request_start'));
-      loadTestFile(require.resolve('./_input_control_vis'));
+      loadTestFile(require.resolve('./input_control_vis'));
       loadTestFile(require.resolve('./_inspector'));
       loadTestFile(require.resolve('./_lab_mode'));
       loadTestFile(require.resolve('./_line_chart'));
