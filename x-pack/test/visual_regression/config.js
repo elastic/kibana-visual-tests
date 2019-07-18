@@ -13,9 +13,7 @@ export default async function ({ readConfigFile }) {
     ...functionalConfig.getAll(),
 
     testFiles: [
-      require.resolve('./tests/login_page'),
-      require.resolve('./tests/canvas'),
-      require.resolve('./tests/maps')
+      require.resolve('./tests/canvas')
     ],
 
     services: {
