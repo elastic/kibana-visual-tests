@@ -30,7 +30,7 @@ export default function ({ getService, getPageObjects }) {
 
   const FIELD_NAME = 'machine.os.raw';
 
-  describe.only('input control visualization', () => {
+  describe('input control visualization', () => {
 
     before(async () => {
       await PageObjects.visualize.navigateToNewVisualization();
@@ -240,7 +240,7 @@ export default function ({ getService, getPageObjects }) {
         const updatedOptions = await comboBox.getOptionsList('listControlSelect0');
         expect(updatedOptions.trim().split('\n').join()).to.equal('135.206.117.161,177.194.175.66,243.158.217.196');
         await visualTesting.snapshot();
-        
+
       });
     });
 
