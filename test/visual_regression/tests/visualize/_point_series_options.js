@@ -118,6 +118,7 @@ export default function ({ getService, getPageObjects }) {
         await PageObjects.visualize.clickGo();
         const length = await pointSeriesVis.getHistogramSeries();
         expect(length).to.be(1);
+        await PageObjects.common.sleep(5000);
         await visualTesting.snapshot();
       });
     });
@@ -192,6 +193,7 @@ export default function ({ getService, getPageObjects }) {
         await PageObjects.visualize.clickYAxisOptions('ValueAxis-1');
         const title = await PageObjects.visualize.getYAxisTitle();
         expect(title).to.be(axisTitle);
+        await PageObjects.common.sleep(5000);
         await visualTesting.snapshot();
       });
     });
