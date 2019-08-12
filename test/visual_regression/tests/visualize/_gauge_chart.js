@@ -53,6 +53,7 @@ export default function ({ getService, getPageObjects }) {
       return retry.try(async function tryingForTime() {
         const metricValue = await PageObjects.visualize.getGaugeValue();
         expect(expectedCount).to.eql(metricValue);
+        await PageObjects.common.sleep(5000);
         await visualTesting.snapshot();
       });
     });
@@ -78,6 +79,8 @@ export default function ({ getService, getPageObjects }) {
         ]);
       });
 
+
+      await PageObjects.common.sleep(5000);
       await visualTesting.snapshot();
 
     });
@@ -99,6 +102,7 @@ export default function ({ getService, getPageObjects }) {
         expect(expectedTexts).to.eql(metricValue);
       });
 
+      await PageObjects.common.sleep(5000);
       await visualTesting.snapshot();
 
     });
