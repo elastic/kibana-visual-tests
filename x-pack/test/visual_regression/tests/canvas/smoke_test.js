@@ -57,6 +57,7 @@ export default function canvasSmokeTest({ getService, getPageObjects }) {
         expect(hashRoute).to.equal(`#/workpad/${testWorkpadId}/page/1`);
       });
 
+      await PageObjects.common.sleep(5000);
       await visualTesting.snapshot();
 
     });
@@ -88,7 +89,7 @@ export default function canvasSmokeTest({ getService, getPageObjects }) {
         expect(timelionRows).to.have.length(12);
 
         await visualTesting.snapshot();
-        
+
       });
     });
   });
