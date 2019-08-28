@@ -39,7 +39,7 @@ export default function ({ getService, getPageObjects }) {
       expect(headers.length).to.be(0);
 
       await pieChart.expectPieSliceCount(0);
+      await visualTesting.snapshot();
     });
-    await visualTesting.snapshot();
   });
 }
