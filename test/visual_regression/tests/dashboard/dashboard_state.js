@@ -19,7 +19,7 @@
 
 import expect from '@kbn/expect';
 
-import { PIE_CHART_VIS_NAME, AREA_CHART_VIS_NAME } from '../../page_objects/dashboard_page';
+import { PIE_CHART_VIS_NAME, AREA_CHART_VIS_NAME } from '../../../functional/page_objects/dashboard_page';
 
 // eslint-disable-next-line
 import {
