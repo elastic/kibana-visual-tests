@@ -35,7 +35,7 @@ export default function ({ getService, getPageObjects }) {
   const PageObjects = getPageObjects(['dashboard', 'header', 'visualize']);
   const visualTesting = getService('visualTesting');
 
-  describe('dashboard filtering', function () {
+  describe.skip('dashboard filtering', function () {
     this.tags('smoke');
     before(async () => {
       await PageObjects.dashboard.gotoDashboardLandingPage();
