@@ -36,7 +36,8 @@ export default function canvasSmokeTest({ getService, getPageObjects }) {
         expect(workpadRows).to.have.length(1);
         expect(await workpadRows[0].getVisibleText()).to.equal('Test Workpad');
       });
-
+      
+      await PageObjects.common.sleep(5000);
       await visualTesting.snapshot();
 
     });
@@ -57,6 +58,7 @@ export default function canvasSmokeTest({ getService, getPageObjects }) {
         expect(hashRoute).to.equal(`#/workpad/${testWorkpadId}/page/1`);
       });
 
+      await PageObjects.common.sleep(5000);
       await visualTesting.snapshot();
 
     });
@@ -87,8 +89,9 @@ export default function canvasSmokeTest({ getService, getPageObjects }) {
         const timelionRows = await elements[3].findAllByCssSelector('.canvasDataTable tbody tr');
         expect(timelionRows).to.have.length(12);
 
+        await PageObjects.common.sleep(5000);
         await visualTesting.snapshot();
-        
+
       });
     });
   });

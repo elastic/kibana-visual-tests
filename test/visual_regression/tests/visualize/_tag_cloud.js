@@ -57,6 +57,7 @@ export default function ({ getService, getPageObjects }) {
 
     it('should have inspector enabled', async function () {
       await inspector.expectIsEnabled();
+      await PageObjects.common.sleep(5000);
       await visualTesting.snapshot();
     });
 
@@ -64,6 +65,7 @@ export default function ({ getService, getPageObjects }) {
       const data = await PageObjects.visualize.getTextTag();
       log.debug(data);
       expect(data).to.eql([ '32,212,254,720', '21,474,836,480', '20,401,094,656', '19,327,352,832', '18,253,611,008' ]);
+      await PageObjects.common.sleep(3000);
       await visualTesting.snapshot();
     });
 
@@ -75,6 +77,7 @@ export default function ({ getService, getPageObjects }) {
       const afterSize = await editorSidebar.getSize();
       expect(afterSize.width).to.be(0);
       await PageObjects.visualize.clickEditorSidebarCollapse();
+      await PageObjects.common.sleep(3000);
       await visualTesting.snapshot();
     });
 
@@ -89,6 +92,8 @@ export default function ({ getService, getPageObjects }) {
       const data = await PageObjects.visualize.getTextTag();
       log.debug(data);
       expect(data).to.eql(['32,212,254,720', '21,474,836,480', '20,401,094,656', '19,327,352,832', '18,253,611,008']);
+      await PageObjects.common.sleep(3000);
+
       await visualTesting.snapshot();
     });
 
@@ -99,6 +104,8 @@ export default function ({ getService, getPageObjects }) {
       await PageObjects.common.sleep(1000);
       const data = await PageObjects.visualize.getTextTag();
       expect(data).to.eql([ '32,212,254,720', '21,474,836,480', '20,401,094,656', '19,327,352,832', '18,253,611,008' ]);
+      await PageObjects.common.sleep(3000);
+
       await visualTesting.snapshot();
     });
 
@@ -107,6 +114,8 @@ export default function ({ getService, getPageObjects }) {
       await PageObjects.visualize.waitForVisualizationSavedToastGone();
       await PageObjects.visualize.loadSavedVisualization(vizName1);
       await PageObjects.visualize.waitForVisualization();
+      await PageObjects.common.sleep(3000);
+
       await visualTesting.snapshot();
     });
 
@@ -133,6 +142,8 @@ export default function ({ getService, getPageObjects }) {
       await inspector.open();
       await await inspector.setTablePageSize('50');
       await inspector.expectTableData(expectedTableData);
+      await PageObjects.common.sleep(3000);
+
       await visualTesting.snapshot();
     });
 
@@ -167,6 +178,8 @@ export default function ({ getService, getPageObjects }) {
         const data = await PageObjects.visualize.getTextTag();
         log.debug(data);
         expect(data).to.eql([ '30GB', '20GB', '19GB', '18GB', '17GB' ]);
+        await PageObjects.common.sleep(3000);
+
         await visualTesting.snapshot();
       });
 
@@ -175,6 +188,8 @@ export default function ({ getService, getPageObjects }) {
         await PageObjects.header.waitUntilLoadingHasFinished();
         const data = await PageObjects.visualize.getTextTag();
         expect(data).to.eql([ '30GB' ]);
+        await PageObjects.common.sleep(3000);
+
         await visualTesting.snapshot();
       });
 

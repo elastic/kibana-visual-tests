@@ -24,6 +24,7 @@ import { FtrProviderContext } from '../../ftr_provider_context';
 export default function({ getService, getPageObjects }: FtrProviderContext) {
   const { visualBuilder, timePicker } = getPageObjects(['visualBuilder', 'timePicker']);
   const visualTesting = getService('visualTesting');
+  const PageObjects = getPageObjects(['common']);
 
   async function cleanupMarkdownData(variableName: 'variable' | 'label', checkedValue: string) {
     await visualBuilder.markdownSwitchSubTab('data');
@@ -53,6 +54,7 @@ export default function({ getService, getPageObjects }: FtrProviderContext) {
         const variables = await visualBuilder.getMarkdownTableVariables();
         expect(variables).not.to.be.empty();
         expect(variables).to.have.length(5);
+        await PageObjects.common.sleep(5000);
         await visualTesting.snapshot();
       });
 
@@ -60,6 +62,7 @@ export default function({ getService, getPageObjects }: FtrProviderContext) {
         await visualBuilder.enterMarkdown('{{ count.data.raw.[0].[0] }}');
         const text = await visualBuilder.getMarkdownText();
         expect(text).to.be('1442901600000');
+        await PageObjects.common.sleep(5000);
         await visualTesting.snapshot();
       });
 
@@ -67,6 +70,7 @@ export default function({ getService, getPageObjects }: FtrProviderContext) {
         await visualBuilder.enterMarkdown('{{ count.data.raw.[0].[1] }}');
         const text = await visualBuilder.getMarkdownText();
         expect(text).to.be('6');
+        await PageObjects.common.sleep(5000);
         await visualTesting.snapshot();
       });
 
@@ -75,6 +79,7 @@ export default function({ getService, getPageObjects }: FtrProviderContext) {
         await visualBuilder.enterMarkdown(html);
         const markdownText = await visualBuilder.getMarkdownText();
         expect(markdownText).to.be(html);
+        await PageObjects.common.sleep(5000);
         await visualTesting.snapshot();
       });
 
@@ -84,6 +89,7 @@ export default function({ getService, getPageObjects }: FtrProviderContext) {
         await visualBuilder.enterMarkdown(list);
         const markdownText = await visualBuilder.getMarkdownText();
         expect(markdownText).to.be(expectedRenderer);
+        await PageObjects.common.sleep(5000);
         await visualTesting.snapshot();
       });
 
@@ -99,6 +105,7 @@ export default function({ getService, getPageObjects }: FtrProviderContext) {
         tableValues.forEach(value => {
           expect(value).to.be.equal(DATA);
         });
+        await PageObjects.common.sleep(5000);
         await visualTesting.snapshot();
       });
 
@@ -119,6 +126,7 @@ export default function({ getService, getPageObjects }: FtrProviderContext) {
         });
 
         await cleanupMarkdownData(VARIABLE, VARIABLE);
+        await PageObjects.common.sleep(5000);
         await visualTesting.snapshot();
       });
 
@@ -128,6 +136,7 @@ export default function({ getService, getPageObjects }: FtrProviderContext) {
         const seriesLength = (await visualBuilder.getSeries()).length;
 
         expect(seriesLength).to.be.equal(2);
+        await PageObjects.common.sleep(5000);
         await visualTesting.snapshot();
       });
 
@@ -138,6 +147,7 @@ export default function({ getService, getPageObjects }: FtrProviderContext) {
         const aggregationLength = await visualBuilder.getAggregationCount();
 
         expect(aggregationLength).to.be.equal(2);
+        await PageObjects.common.sleep(5000);
         await visualTesting.snapshot();
       });
     });
